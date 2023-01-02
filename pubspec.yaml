@@ -43,6 +43,7 @@ dependencies:
   email_validator: ^2.1.17
   provider: ^6.0.5
   get: ^4.6.5
+  flutter_facebook_auth: ^5.0.7
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,7 @@ flutter:
      - assets/image/googleicon.png
      - assets/image/background.png
      - assets/image/splash.png
+     - assets/image/facebook.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

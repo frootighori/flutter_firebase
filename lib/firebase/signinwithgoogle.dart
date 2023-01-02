@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class   GoogleSignInProvider extends  ChangeNotifier{
@@ -30,7 +31,13 @@ Future googleLogin() async{
 } 
  Future googlelogout() async{
   await googleSignIn.disconnect();
+
   FirebaseAuth.instance.signOut();
+  
+ }Future facebooklogout() async{
+await FacebookAuth.instance.logOut();
+  FirebaseAuth.instance.signOut();
+  
  }
 
 }
