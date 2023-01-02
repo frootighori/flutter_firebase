@@ -4,6 +4,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mysampleapp/constants/appcolor.dart';
 import 'package:mysampleapp/firebase/signinwithgoogle.dart';
@@ -13,6 +14,8 @@ import 'package:mysampleapp/views/page/widget/button_widget.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
+    static String routeName = '/login-email-password';
+
   const LoginPage({super.key});
 
   @override
@@ -121,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: 15),
+                              const SizedBox(height: 10),
                               const Text(
                                 "EmailID",
                                 style: TextStyle(
@@ -159,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                 ),
                               ),
-                              const SizedBox(height: 15),
+                              const SizedBox(height: 10),
                               const Text(
                                 "Password",
                                 style: TextStyle(
@@ -194,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                                         borderSide: const BorderSide(),
                                       ),
                                     ),
-                                    validator: (value) {
+                                    /* validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Password is Required';
                                       }
@@ -208,32 +211,37 @@ class _LoginPageState extends State<LoginPage> {
                                           return 'Please enter small, capital , special cass , number ';
                                         }
                                       }
-                                    }),
+                                    } */
+                                    ),
                               ),
                               const SizedBox(
-                                height: 25,
+                                height: 15,
                               ),
-                              SizedBox(
-                                width: 290,
-                                child: ButtonWidget(
-                                  text: "Login",
-                                  onPressed: () {
-                                    _formKey.currentState!.save();
-                                    if (_formKey.currentState!.validate()) {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HomePage()));
+                              Center(
+                                child: SizedBox(
+                                  width: 260,
+                                  child: ButtonWidget(
+                                    text: "Login",
+                                    onPressed: () {
+                                      _formKey.currentState!.save();
+                                      if (_formKey.currentState!.validate()) {
 
-                                      Map userRegisterData = {
-                                        "email": emailid.text,
-                                        "password": password.text,
-                                      };
-                                      print(
-                                          "userRegisterData $userRegisterData");
-                                    }
-                                  },
+
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomePage()));
+
+                                        Map userRegisterData = {
+                                          "email": emailid.text,
+                                          "password": password.text,
+                                        };
+                                        print(
+                                            "userRegisterData $userRegisterData");
+                                      }
+                                    },
+                                  ),
                                 ),
                               ),
                               Align(
@@ -281,6 +289,39 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                 ),
                               ),
+                              const SizedBox(height: 10), Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
+                                child: MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  color: AppColor.primaryColor,
+                                  elevation: 10,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 30.0,
+                                        width: 30.0,
+                                        decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  'assets/image/facebook.png'),
+                                              fit: BoxFit.cover),
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      const Text("Sign In with Facebook")
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    signInWithFacebook(context);
+                                  },
+                                ),
+                              ),
                               const SizedBox(height: 20),
                               Center(
                                 child: RichText(
@@ -306,7 +347,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            RegisterPage()));
+                                                            const RegisterPage()));
                                               })
                                       ]),
                                 ),
@@ -327,4 +368,17 @@ class _LoginPageState extends State<LoginPage> {
       _isHidden = !_isHidden;
     });
   }
-}
+ Future<void> signInWithFacebook (BuildContext context) async{
+  try{
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+        final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+        await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+
+  }on FirebaseAuthException catch (e){
+      print(e.toString());
+
+  }
+ }
+
+ }
