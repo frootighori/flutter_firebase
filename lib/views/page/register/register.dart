@@ -251,12 +251,12 @@ void signUpUser() async {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          LoginPage()));
-                                            })
-                                    ]),
-                              ),
-                            )
-                          ],
+                                                        const LoginPage()));
+                                          })
+                                  ]),
+                            ),
+                          )
+                        ],
                         ),
                       ),
                     ),
