@@ -1,7 +1,9 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mysampleapp/utils/showotpdialog.dart';
 import 'package:mysampleapp/utils/showsnackbara.dart';
 
 class FirebaseAuthMethods {
@@ -23,7 +25,7 @@ class FirebaseAuthMethods {
   // Stream get authState => FirebaseAuth.instance.idTokenChanges();
   // KNOW MORE ABOUT THEM HERE: https://firebase.flutter.dev/docs/auth/start#auth-state
 
-  // EMAIL SIGN UP
+  // EMAIL SIGN UP    
   Future<void> signUpWithEmail({
     required String email,
     required String password,
@@ -34,7 +36,9 @@ class FirebaseAuthMethods {
         email: email,
         password: password,
       );
+      
       await sendEmailVerification(context);
+      
     } on FirebaseAuthException catch (e) {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
@@ -59,6 +63,7 @@ class FirebaseAuthMethods {
         password: password,
       );
       if (!user.emailVerified) {
+        
         await sendEmailVerification(context);
         // restrict access to certain things using provider
         // transition to another page instead of home screen
@@ -77,8 +82,8 @@ class FirebaseAuthMethods {
       showSnackBar(context, e.message!); // Display error message
     }
   }
-/* 
-  // GOOGLE SIGN IN
+
+   // GOOGLE SIGN IN
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
       if (kIsWeb) {
@@ -117,7 +122,7 @@ class FirebaseAuthMethods {
       showSnackBar(context, e.message!); // Displaying the error message
     }
   }
-
+/*
   // ANONYMOUS SIGN IN
   Future<void> signInAnonymously(BuildContext context) async {
     try {
@@ -125,7 +130,7 @@ class FirebaseAuthMethods {
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
     }
-  }
+  }*/
 
   // FACEBOOK SIGN IN
   Future<void> signInWithFacebook(BuildContext context) async {
@@ -139,7 +144,7 @@ class FirebaseAuthMethods {
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
     }
-  }
+  } 
 
   // PHONE SIGN IN
   Future<void> phoneSignIn(
@@ -201,7 +206,7 @@ class FirebaseAuthMethods {
         },
       );
     }
-  }*/
+  }
 
   // SIGN OUT
   Future<void> signOut(BuildContext context) async {
@@ -221,5 +226,5 @@ class FirebaseAuthMethods {
       // if an error of requires-recent-login is thrown, make sure to log
       // in user again and then delete account.
     }
-  } 
+  }
 }
