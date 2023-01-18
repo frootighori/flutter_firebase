@@ -9,10 +9,12 @@ class AppTheme {
   ThemeData lightTheme() {
     return ThemeData(
       fontFamily: GoogleFonts.akayaKanadaka().fontFamily,
+      colorScheme: ColorScheme.fromSwatch()
+            .copyWith(secondary:AppColor.accentColor),
       accentColor: AppColor.accentColor,
       primaryColor: AppColor.primaryColor,
       primaryColorDark: AppColor.primaryColorDark,
-      textSelectionTheme: TextSelectionThemeData(
+      textSelectionTheme: const TextSelectionThemeData(
         selectionColor: Colors.grey,
         cursorColor: AppColor.cursorColor,
       ),
@@ -32,9 +34,9 @@ class AppTheme {
       brightness: Brightness.light,
       // CUSTOMIZE showDatePicker Colors
       dialogBackgroundColor: Colors.white,
-      colorScheme: ColorScheme.light(primary: AppColor.primaryColor),
       buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
       highlightColor: Colors.grey[400],
+      
     );
   }
 
@@ -46,7 +48,7 @@ class AppTheme {
       accentColor: AppColor.accentColor,
       primaryColor: AppColor.primaryColorDark,
       primaryColorDark: AppColor.primaryColor,
-      textSelectionTheme: TextSelectionThemeData(
+      textSelectionTheme: const TextSelectionThemeData(
         selectionColor: Colors.grey,
         cursorColor: AppColor.cursorColor,
       ),

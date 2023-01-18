@@ -14,10 +14,10 @@ required this.onPressed,
   Widget build(BuildContext context) => ElevatedButton(
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColor.primaryColor,
-      shape: StadiumBorder(),
-      padding: EdgeInsets.symmetric(horizontal: 70,vertical: 12)),
-      child: Text(text,style: TextStyle(fontSize: 22),),
+      shape: const StadiumBorder(),
+      padding: const EdgeInsets.symmetric(horizontal: 70,vertical: 12)),
       onPressed: onPressed,
+      child: Text(text,style: const TextStyle(fontSize: 22),),
     );
   
 }

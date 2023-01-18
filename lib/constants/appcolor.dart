@@ -1,10 +1,11 @@
-import 'dart:ui';
+
+import 'package:flutter/material.dart';
 
 class AppColor {
-  static final primaryColor = Color(0xC46A4CFF);
-  static final accentColor = Color(0xFF000000);                     
-  static final primaryMaterialColor = Color(0xFF000000);
-  static final primaryColorDark = Color.fromARGB(217, 37, 48, 135);
-  static final cursorColor = Color(0xFF000000);
-  static final white = Color(0xFFFFFFFF);
+    static const primaryColor = Color.fromARGB(196, 106, 76, 255);
+  static const accentColor = Color(0xFF000000);                     
+  static const primaryMaterialColor = Color(0xFF000000);
+  static const primaryColorDark = Color.fromARGB(217, 37, 48, 135);
+  static const cursorColor = Color(0xFF000000);
+  static const white = Color(0xFFFFFFFF);
 }

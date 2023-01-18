@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mysampleapp/constants/appcolor.dart';
 import 'package:mysampleapp/firebase/authfirebase.dart';
+import 'package:mysampleapp/views/page/home/home_page.dart';
 import 'package:mysampleapp/views/page/login/login_page.dart';
-import 'package:mysampleapp/views/page/widget/afterlogin.dart';
 import 'package:mysampleapp/views/page/widget/button_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -21,15 +21,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool passenable = true;
   bool passenable1 = true;
-  bool _isHidden = true;
-
-  void _togglePasswordView() {
-    setState(() {
-      _isHidden = !_isHidden;
-    });
-  }
-
-  RegExp _password =
+  final RegExp _password =
       RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
 
   bool validatePassword(String pass) {
@@ -51,6 +43,9 @@ void signUpUser() async {
           password: password.text,
           context: context,
         );
+         Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => const HomePage()));
+
   }
   @override
   Widget build(BuildContext context) {
@@ -113,151 +108,149 @@ void signUpUser() async {
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(right: 10, left: 10),
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                             const SizedBox(height: 10),
-                            const Text(
-                              "EmailID",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white),
+                      padding: const EdgeInsets.only(right: 10, left: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                           const SizedBox(height: 10),
+                          const Text(
+                            "EmailID",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            style: const TextStyle(
+                              color: Colors.white,
                             ),
-                            const SizedBox(height: 10),
-                            TextFormField(
+                            controller: emailid,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 10),
+                              hintText: "Enter your EmailID",
+                              hintStyle:
+                                  const TextStyle(color: Colors.white60),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: const BorderSide(),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'EmailId is Required';
+                              }
+                              if (!EmailValidator.validate(value, true)) {
+                                return 'Enter Valid EmailId ';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          const Text(
+                            "Password",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
                               style: const TextStyle(
                                 color: Colors.white,
                               ),
-                              controller: emailid,
+                              controller: password,
+                              obscureText: passenable,
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
+                                contentPadding: const EdgeInsets.symmetric(
                                     vertical: 0, horizontal: 10),
-                                hintText: "Enter your EmailID",
+                                hintText: "Enter your Password",
                                 hintStyle:
                                     const TextStyle(color: Colors.white60),
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (passenable) {
+                                          passenable = false;
+                                        } else {
+                                          passenable = true;
+                                        }
+                                      });
+                                    },
+                                    icon: Icon(passenable == true
+                                        ? Icons.visibility
+                                        : Icons.visibility_off)),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15.0),
                                   borderSide: const BorderSide(),
                                 ),
                               ),
-                              validator: (value) {
+                              /* validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'EmailId is Required';
+                                  return 'Password is Required';
                                 }
-                                if (!EmailValidator.validate(value, true)) {
-                                  return 'Enter Valid EmailId ';
+                                if (value.length < 8) {
+                                  return 'Please enter password of atleast 8 word';
+                                } else {
+                                  bool result = validatePassword(value);
+                                  if (result) {
+                                    return null;
+                                  } else {
+                                    return 'Please enter small, capital , special cass , number ';
+                                  }
                                 }
-                                return null;
+                              } */),
+                           const SizedBox(
+                            height: 25,
+                          ),
+                          SizedBox(
+                            width: 290,
+                            child: ButtonWidget(
+                              text: "Create Account",
+                              onPressed: () {
+                                _formKey.currentState!.save();
+                                if (_formKey.currentState!.validate()) {
+                                 signUpUser();
+
+                                  Map userRegisterData = {
+                                    "email": emailid.text,
+                                    "password": password.text,
+                                  };
+                                  print("userRegisterData $userRegisterData");
+                                }
                               },
                             ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              "Password",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white),
-                            ),
-                            const SizedBox(height: 10),
-                            TextFormField(
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                                controller: password,
-                                obscureText: passenable,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 0, horizontal: 10),
-                                  hintText: "Enter your Password",
-                                  hintStyle:
-                                      const TextStyle(color: Colors.white60),
-                                  suffixIcon: IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          if (passenable) {
-                                            passenable = false;
-                                          } else {
-                                            passenable = true;
-                                          }
-                                        });
-                                      },
-                                      icon: Icon(passenable == true
-                                          ? Icons.visibility
-                                          : Icons.visibility_off)),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: const BorderSide(),
-                                  ),
-                                ),
-                                /* validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Password is Required';
-                                  }
-                                  if (value.length < 8) {
-                                    return 'Please enter password of atleast 8 word';
-                                  } else {
-                                    bool result = validatePassword(value);
-                                    if (result) {
-                                      return null;
-                                    } else {
-                                      return 'Please enter small, capital , special cass , number ';
-                                    }
-                                  }
-                                } */),
-                             const SizedBox(
-                              height: 25,
-                            ),
-                            SizedBox(
-                              width: 290,
-                              child: ButtonWidget(
-                                text: "Create Account",
-                                onPressed: () {
-                                  _formKey.currentState!.save();
-                                  if (_formKey.currentState!.validate()) {
-                                   signUpUser();
-
-                                    Map userRegisterData = {
-                                      "email": emailid.text,
-                                      "password": password.text,
-                                    };
-                                    print("userRegisterData $userRegisterData");
-                                  }
-                                },
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Center(
-                              child: RichText(
-                                text: TextSpan(
-                                    text: 'Already having an Acount?',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: AppColor.primaryColor,
-                                        fontFamily: GoogleFonts.akayaKanadaka()
-                                            .fontFamily),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: ' Login',
-                                          style: TextStyle(
-                                              color: AppColor.primaryColorDark,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
+                          ),
+                          const SizedBox(height: 10),
+                          Center(
+                            child: RichText(
+                              text: TextSpan(
+                                  text: 'Already having an Acount?',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: AppColor.primaryColor,
+                                      fontFamily: GoogleFonts.akayaKanadaka()
+                                          .fontFamily),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: ' Login',
+                                        style: const TextStyle(
+                                            color: AppColor.primaryColorDark,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
                                                         const LoginPage()));
                                           })
                                   ]),
                             ),
                           )
                         ],
-                        ),
                       ),
                     ),
                   ))

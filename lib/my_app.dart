@@ -6,6 +6,7 @@ import 'package:mysampleapp/constants/apptheme.dart';
 import 'package:mysampleapp/firebase/authfirebase.dart';
 import 'package:mysampleapp/views/page/home/home_page.dart';
 import 'package:mysampleapp/views/page/login/login_page.dart';
+import 'package:mysampleapp/views/page/login/login_phonescreen.dart';
 import 'package:mysampleapp/views/page/register/register.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,7 @@ home: const AuthWrapper(),
           RegisterPage.routeName: (context) =>
               const RegisterPage(),
           LoginPage.routeName: (context) => const LoginPage(),
-          //PhoneScreen.routeName: (context) => const PhoneScreen(),
+          PhoneScreen.routeName: (context) => const PhoneScreen(),
         },          theme: theme,
           darkTheme: darkTheme,
         ));
@@ -56,7 +57,7 @@ class AuthWrapper extends StatelessWidget {
     final firebaseUser = context.watch<User?>();
 
     if (firebaseUser != null) {
-      return  HomePage();
+      return  const HomePage();
     }
     return const LoginPage();
   }
